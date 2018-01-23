@@ -1,1 +1,1 @@
-include ':app', ':simpel-barcode-scanner'
+include ':app', ':simple-barcode-scanner'

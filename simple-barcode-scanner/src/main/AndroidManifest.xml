@@ -2,8 +2,4 @@
     package="nl.boydroid.barcodevisioner" >
 
     <uses-permission android:name="android.permission.CAMERA" />
-
-    <application>
-        <activity android:name=".BarcodeCaptureActivity"/>
-    </application>
 </manifest>

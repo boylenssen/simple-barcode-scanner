@@ -1,15 +1,10 @@
 package nl.boydroid.barcodevisioner
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.hardware.Camera
-import android.support.annotation.RequiresPermission
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.View
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
