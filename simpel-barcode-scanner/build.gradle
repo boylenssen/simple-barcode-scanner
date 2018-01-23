@@ -1,0 +1,72 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+ext {
+    bintrayRepo = 'simple-barcode-scanner'
+    bintrayName = 'simple-barcode-scanner'
+
+    publishedGroupId = 'nl.boydroid'
+    libraryName = 'simple-barcode-scanner'
+    artifact = 'simple-barcode-scanner'
+
+    libraryDescription = 'Simple barcode scanning view'
+
+    siteUrl = 'https://github.com/boylenssen/simple-barcode-scanner'
+    gitUrl = 'https://github.com/boylenssen/simple-barcode-scanner'
+
+    libraryVersion = '0.1.0'
+
+    developerId = 'boylenssen'
+    developerName = 'Boydroid'
+    developerEmail = 'boy@boydroid.nl'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion 26
+
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.google.android.gms:play-services-vision:11.8.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    compile 'nl.boydroid:grant-me:0.2.0'
+}
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
+//Add these lines to publish library to bintray. This is the readymade scripts made by github user nuuneoi to make uploading to bintray easy.
+//Place it at the end of the file
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
