@@ -1,8 +1,8 @@
-package nl.boydroid.barcodevisioner
+package nl.boydroid
 
-import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import nl.boydroid.barcodevisioner.R
 
 class MainActivity : AppCompatActivity() {
 

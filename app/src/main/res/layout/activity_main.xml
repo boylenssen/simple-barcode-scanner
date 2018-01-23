@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.boydroid.barcodevisioner.MainActivity">
+    tools:context="nl.boydroid.MainActivity">
 
-    <nl.boydroid.barcodevisioner.BarcodeCaptureView
+    <nl.boydroid.BarcodeCaptureView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/boylenssen/simple-barcode-scanner'
     gitUrl = 'https://github.com/boylenssen/simple-barcode-scanner'
 
-    libraryVersion = '0.1.2'
+    libraryVersion = '0.1.3'
 
     developerId = 'boylenssen'
     developerName = 'Boydroid'

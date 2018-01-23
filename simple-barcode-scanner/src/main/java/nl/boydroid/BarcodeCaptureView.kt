@@ -1,27 +1,37 @@
-package nl.boydroid.barcodevisioner
+package nl.boydroid
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import nl.boydroid.Permission
 
 class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), Detector.Processor<Barcode>, SurfaceHolder.Callback {
-    override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) { }
+
+    interface OnResultHandler {
+        fun onCodeScanned(code: String);
+    }
+
+    var resultHandler: OnResultHandler? = null
+
+    override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) {}
 
     override fun surfaceDestroyed(p0: SurfaceHolder?) {
         cameraSource.stop()
     }
 
+    @SuppressLint("MissingPermission")
     override fun surfaceCreated(p0: SurfaceHolder?) {
-        if (Permission.isGranted(context, android.Manifest.permission.CAMERA)) {
-            cameraSource.start(holder)
-        }
+        Permission.request(android.Manifest.permission.CAMERA,
+                permissionGranted = { granted ->
+                    if (granted) {
+                        cameraSource.start(holder)
+                    }
+                })
     }
 
     init {
@@ -48,8 +58,10 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
     }
 
     override fun receiveDetections(detections: Detector.Detections<Barcode>) {
-        if (detections.detectedItems.size() > 0)
-            Log.d("BOY", "DETECTED: " + detections.detectedItems.valueAt(0).displayValue)
+        if (detections.detectedItems.size() > 0) {
+            val code = detections.detectedItems.valueAt(0).displayValue
+            resultHandler?.onCodeScanned(code)
+        }
     }
 
 
