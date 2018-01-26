@@ -2,6 +2,7 @@ package nl.boydroid
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.annotation.RequiresPermission
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -9,11 +10,39 @@ import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import nl.boydroid.barcodevisioner.R
 
 class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), Detector.Processor<Barcode>, SurfaceHolder.Callback {
 
     interface OnResultHandler {
-        fun onCodeScanned(code: String);
+        fun onCodeScanned(code: String)
+    }
+
+    private val frontCamera: Boolean
+    private var startOnSurfaceCreated = false
+    private var surfaceViewCreated = false
+
+    init {
+        holder.addCallback(this)
+        val a = getContext().obtainStyledAttributes(
+                attrs, R.styleable.BarcodeCaptureView, 0, 0)
+        frontCamera = a.getBoolean(R.styleable.BarcodeCaptureView_front_camera, false)
+        a.recycle()
+    }
+
+    private val barcodeDetector by lazy {
+        val barcodeDetector = BarcodeDetector.Builder(context).build()
+
+        barcodeDetector.setProcessor(this)
+        barcodeDetector
+    }
+
+    private val cameraSource by lazy {
+        CameraSource.Builder(context, barcodeDetector)
+                .setFacing(if (frontCamera) CameraSource.CAMERA_FACING_FRONT else CameraSource.CAMERA_FACING_BACK)
+                .setRequestedPreviewSize(1600, 1024)
+                .setRequestedFps(15.0f)
+                .setAutoFocusEnabled(true).build()
     }
 
     var resultHandler: OnResultHandler? = null
@@ -26,31 +55,21 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
 
     @SuppressLint("MissingPermission")
     override fun surfaceCreated(p0: SurfaceHolder?) {
-        Permission.request(android.Manifest.permission.CAMERA,
-                permissionGranted = { granted ->
-                    if (granted) {
-                        cameraSource.start(holder)
-                    }
-                })
+        surfaceViewCreated = true
+        if (startOnSurfaceCreated) {
+            start()
+        }
     }
 
-    init {
-        holder.addCallback(this)
-    }
+    @SuppressLint("MissingPermission")
+    @RequiresPermission(android.Manifest.permission.CAMERA)
+    fun start() {
+        if (!surfaceViewCreated) {
+            startOnSurfaceCreated = true
+            return
+        }
 
-    private val barcodeDetector by lazy {
-        val barcodeDetector = BarcodeDetector.Builder(context).build()
-
-        barcodeDetector.setProcessor(this)
-        barcodeDetector
-    }
-
-    private val cameraSource by lazy {
-        CameraSource.Builder(context, barcodeDetector)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(1600, 1024)
-                .setRequestedFps(15.0f)
-                .setAutoFocusEnabled(true).build()
+        cameraSource.start(holder)
     }
 
     override fun release() {

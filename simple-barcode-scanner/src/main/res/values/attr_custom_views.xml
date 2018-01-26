@@ -1,0 +1,8 @@
+<resources>
+    <attr name="front_camera" format="boolean" />
+
+    <declare-styleable name="BarcodeCaptureView">
+        <attr name="front_camera"/>
+    </declare-styleable>
+
+</resources>
