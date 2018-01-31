@@ -18,7 +18,8 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
         fun onCodeScanned(code: String)
     }
 
-    var barcodeTypes = Barcode.ALL_FORMATS
+    // default the most used ones
+    var barcodeTypes = Barcode.CODE_128 or Barcode.EAN_13 or Barcode.QR_CODE
 
     private val frontCamera: Boolean
     private var startOnSurfaceCreated = false
