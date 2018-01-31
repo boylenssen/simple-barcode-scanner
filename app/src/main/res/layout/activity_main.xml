@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <nl.boydroid.BarcodeCaptureView
-        app:front_camera="true"
         android:id="@+id/barcode"
+        app:front_camera="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

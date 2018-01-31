@@ -18,6 +18,8 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
         fun onCodeScanned(code: String)
     }
 
+    var barcodeTypes = Barcode.ALL_FORMATS
+
     private val frontCamera: Boolean
     private var startOnSurfaceCreated = false
     private var surfaceViewCreated = false
@@ -31,7 +33,10 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
     }
 
     private val barcodeDetector by lazy {
-        val barcodeDetector = BarcodeDetector.Builder(context).build()
+        val barcodeDetector = BarcodeDetector
+                .Builder(context)
+                .setBarcodeFormats(barcodeTypes)
+                .build()
 
         barcodeDetector.setProcessor(this)
         barcodeDetector
@@ -50,6 +55,7 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
     override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) {}
 
     override fun surfaceDestroyed(p0: SurfaceHolder?) {
+        surfaceViewCreated = false
         cameraSource.stop()
     }
 
@@ -82,6 +88,4 @@ class BarcodeCaptureView(context: Context, attrs: AttributeSet) : SurfaceView(co
             resultHandler?.onCodeScanned(code)
         }
     }
-
-
 }
