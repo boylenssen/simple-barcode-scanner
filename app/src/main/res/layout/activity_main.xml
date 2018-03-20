@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <nl.boydroid.BarcodeCaptureView
-        android:id="@+id/barcode"
-        app:front_camera="false"
+        android:id="@+id/barcodeCaptureView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
+    <Button
+        android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
